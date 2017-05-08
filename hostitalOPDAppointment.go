@@ -19,8 +19,6 @@ type Patient struct {
 	Contact_Number  string `json:"contact_Number"`
 	Hospital        string `json:"hospital"`
 	AppointmentTime string `json:"appointmentTime"`
-	CurrentBalance  string `json:"currentBalance"`
-	BalanceUsed     string `json:"balanceUsed"`
 }
 
 func (this *Patient) convert(row *shim.Row) {
