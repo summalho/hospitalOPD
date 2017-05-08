@@ -64,9 +64,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 		&shim.ColumnDefinition{"LastName", shim.ColumnDefinition_STRING, false},
 		&shim.ColumnDefinition{"PhoneNumber", shim.ColumnDefinition_STRING, false},
 		&shim.ColumnDefinition{"Hospital", shim.ColumnDefinition_STRING, false},
-		&shim.ColumnDefinition{"AppointmentTime", shim.ColumnDefinition_STRING, false},
-		&shim.ColumnDefinition{"CurrentBalance", shim.ColumnDefinition_STRING, false},
-		&shim.ColumnDefinition{"BalanceUsed", shim.ColumnDefinition_STRING, false}})
+		&shim.ColumnDefinition{"AppointmentTime", shim.ColumnDefinition_STRING, false}})
 
 	if err != nil {
 		return nil, errors.New("Table cannot be created")
