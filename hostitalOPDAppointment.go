@@ -327,16 +327,12 @@ func getAllPatientsForHospital(stub shim.ChaincodeStubInterface, args []string) 
 
 	fmt.Println("Inside get patient details")
 
-	if len(args) != 2 {
-		return nil, errors.New("This method requires two arguments. Table name and primary key attriubute")
-	}
-
 	col1 := shim.Column{Value: &shim.Column_String_{String_: args[0]}}
 
 	columns = append(columns, col1)
 
-	var hospitalObject *Hospital
-	var hospitalObjectList []*Hospital
+	//var hospitalObject *Hospital
+	//var hospitalObjectList []*Hospital
 
 	rowChannel, err := stub.GetRows("Hospital_Details", columns)
 
@@ -345,12 +341,13 @@ func getAllPatientsForHospital(stub shim.ChaincodeStubInterface, args []string) 
 	for {
 		select {
 		case row, ok := <-rowChannel:
+			fmt.Println("OK Status : ", ok)
 			if !ok {
 				rowChannel = nil
 			} else {
-				hospitalObject = new(Hospital)
-				hospitalObject.convertHospitalEntries(&row)
-				hospitalObjectList = append(hospitalObjectList, hospitalObject)
+				//hospitalObject = new(Hospital)
+				//hospitalObject.convertHospitalEntries(&row)
+				//hospitalObjectList = append(hospitalObjectList, hospitalObject)
 				rows = append(rows, row)
 			}
 		}
@@ -359,14 +356,16 @@ func getAllPatientsForHospital(stub shim.ChaincodeStubInterface, args []string) 
 		}
 	}
 
-	jsonHospitalObjectList, err := json.Marshal(hospitalObjectList)
+	jsonRows, _ := json.Marshal(rows)
+
+	//jsonHospitalObjectList, err := json.Marshal(hospitalObjectList)
 
 	if err != nil {
 		return nil, errors.New("Error marshalling Json")
 	}
 
-	fmt.Println(string(jsonHospitalObjectList))
+	fmt.Println(string(jsonRows))
 
-	return jsonHospitalObjectList, nil
+	return jsonRows, nil
 
 }
