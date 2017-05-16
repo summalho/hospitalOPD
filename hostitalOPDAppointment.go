@@ -291,6 +291,7 @@ func addPatientInTable(stub shim.ChaincodeStubInterface, args []string) ([]byte,
 	ok, err = stub.InsertRow("Hospital_Details", hospitalRow)
 
 	rowString := fmt.Sprintf("%s", hospitalRow)
+	fmt.Println("rowString for hospital Table", rowString)
 
 	if err != nil {
 		return nil, fmt.Errorf("insertRow operation failed. %s", err)
