@@ -273,6 +273,10 @@ func addPatientInTable(stub shim.ChaincodeStubInterface, args []string) ([]byte,
 	row := shim.Row{Columns: columns}
 	ok, err := stub.InsertRow("Patient_Details", row)
 
+	rowString1 := fmt.Sprintf("%s", row)
+
+	fmt.Println("rowString1 ", rowString1)
+
 	fmt.Println(ok)
 
 	if err != nil {
@@ -286,6 +290,8 @@ func addPatientInTable(stub shim.ChaincodeStubInterface, args []string) ([]byte,
 	hospitalRow := shim.Row{Columns: hospitalTableCols}
 	ok, err = stub.InsertRow("Hospital_Details", hospitalRow)
 
+	rowString := fmt.Sprintf("%s", hospitalRow)
+
 	if err != nil {
 		return nil, fmt.Errorf("insertRow operation failed. %s", err)
 	}
@@ -295,7 +301,7 @@ func addPatientInTable(stub shim.ChaincodeStubInterface, args []string) ([]byte,
 	}
 
 	fmt.Println("Exiting patient details after adding in Patient Table and Hospital table ")
-	return nil, nil
+	return []byte(rowString), nil
 
 }
 
