@@ -240,19 +240,19 @@ func addPatientInTable(stub shim.ChaincodeStubInterface, args []string) ([]byte,
 
 	fmt.Println("inside add patientdetails in table")
 
-	col5Int, _ := strconv.ParseInt(args[4], 10, 64)
-	col8Int, _ := strconv.ParseInt(args[7], 10, 64)
-	col9Int, _ := strconv.ParseInt(args[8], 10, 64)
+	col4Int, _ := strconv.ParseInt(args[4], 10, 64)
+	col7Int, _ := strconv.ParseInt(args[7], 10, 64)
+	col8Int, _ := strconv.ParseInt(args[8], 10, 64)
 
 	col0 := shim.Column{Value: &shim.Column_String_{String_: args[0]}}
 	col1 := shim.Column{Value: &shim.Column_String_{String_: args[1]}}
 	col2 := shim.Column{Value: &shim.Column_String_{String_: args[2]}}
 	col3 := shim.Column{Value: &shim.Column_String_{String_: args[3]}}
-	col4 := shim.Column{Value: &shim.Column_Int64{Int64: col5Int}}
+	col4 := shim.Column{Value: &shim.Column_Int64{Int64: col4Int}}
 	col5 := shim.Column{Value: &shim.Column_String_{String_: args[5]}}
 	col6 := shim.Column{Value: &shim.Column_String_{String_: args[6]}}
-	col7 := shim.Column{Value: &shim.Column_Int64{Int64: col8Int}}
-	col8 := shim.Column{Value: &shim.Column_Int64{Int64: col9Int}}
+	col7 := shim.Column{Value: &shim.Column_Int64{Int64: col7Int}}
+	col8 := shim.Column{Value: &shim.Column_Int64{Int64: col8Int}}
 
 	columns = append(columns, &col0)
 	columns = append(columns, &col1)
@@ -331,19 +331,19 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 func getAllPatientsForHospital(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	var columns []shim.Column
-
 	fmt.Println("Inside get patient details")
 
 	col1 := shim.Column{Value: &shim.Column_String_{String_: args[0]}}
 
 	columns = append(columns, col1)
 
-	//var hospitalObject *Hospital
-	//var hospitalObjectList []*Hospital
+	hospitalObjectList := []*Hospital{}
 
 	rowChannel, err := stub.GetRows("Hospital_Details", columns)
 
-	var rows []shim.Row
+	fmt.Println("rowChannel : ", rowChannel)
+
+	//var rows []shim.Row
 
 	for {
 		select {
@@ -352,10 +352,10 @@ func getAllPatientsForHospital(stub shim.ChaincodeStubInterface, args []string) 
 			if !ok {
 				rowChannel = nil
 			} else {
-				//hospitalObject = new(Hospital)
-				//hospitalObject.convertHospitalEntries(&row)
-				//hospitalObjectList = append(hospitalObjectList, hospitalObject)
-				rows = append(rows, row)
+				hospitalObject := new(Hospital)
+				hospitalObject.convertHospitalEntries(&row)
+				hospitalObjectList = append(hospitalObjectList, hospitalObject)
+				//rows = append(rows, row)
 			}
 		}
 		if rowChannel == nil {
@@ -363,7 +363,7 @@ func getAllPatientsForHospital(stub shim.ChaincodeStubInterface, args []string) 
 		}
 	}
 
-	jsonRows, _ := json.Marshal(rows)
+	jsonRows, _ := json.Marshal(hospitalObjectList)
 
 	//jsonHospitalObjectList, err := json.Marshal(hospitalObjectList)
 
